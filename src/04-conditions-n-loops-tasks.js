@@ -443,8 +443,20 @@ function getCommonDirectoryPath(pathes) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct(m1, m2) {
+  const rowM1 = m1.length;
+  const colM1 = m1[0].length;
+  const colM2 = m2[0].length;
+  let res = [];
+  res = Array.from({ length: rowM1 }, () => Array(colM2).fill(0));
+  for (let i = 0; i < rowM1; i += 1) {
+    for (let j = 0; j < colM2; j += 1) {
+      for (let k = 0; k < colM1; k += 1) {
+        res[i][j] += m1[i][k] * m2[k][j];
+      }
+    }
+  }
+  return res;
 }
 
 
@@ -478,8 +490,28 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) {
+  const fixed = position.map((row) => [...row, ...Array(3 - row.length).fill(undefined)]);
+  const row = fixed.flat();
+  const wins = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6]];
+  let winner;
+  wins.some((combination) => {
+    const [a, b, c] = combination;
+    if (row[a] !== undefined && row[a] === row[b] && row[a] === row[c]) {
+      winner = row[a];
+      return true;
+    }
+    return false;
+  });
+  return winner;
 }
 
 
