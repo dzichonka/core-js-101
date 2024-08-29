@@ -295,8 +295,21 @@ function reverseInteger(num) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  let result = 0;
+  const arr = String(ccn).split('').reverse().map(Number);
+
+  for (let i = 0; i < arr.length; i += 1) {
+    let digit = arr[i];
+    if (i % 2 === 1) {
+      digit *= 2;
+      if (digit > 9) {
+        digit -= 9;
+      }
+    }
+    result += digit;
+  }
+  return result % 10 === 0;
 }
 
 /**
@@ -313,8 +326,12 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  let res = num;
+  while (res > 9) {
+    res = String(res).split('').map(Number).reduce((sum, digit) => sum + digit, 0);
+  }
+  return res;
 }
 
 
@@ -339,8 +356,23 @@ function getDigitalRoot(/* num */) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  const brackets = {
+    '[': ']',
+    '{': '}',
+    '(': ')',
+    '<': '>',
+  };
+  const arr = str.split('');
+  const res = arr.reduce((checkList, char) => {
+    if (brackets[char]) {
+      checkList.push(char);
+    } else if (checkList.length === 0 || char !== brackets[checkList.pop()]) {
+      checkList.push('abra-kadabra');
+    }
+    return checkList;
+  }, []);
+  return (res.length === 0);
 }
 
 
@@ -364,8 +396,8 @@ function isBracketsBalanced(/* str */) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  return num.toString(n);
 }
 
 
@@ -381,8 +413,15 @@ function toNaryString(/* num, n */) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/verbalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  if (pathes.length === 0) return '';
+  const splitPaths = pathes.map((path) => path.split('/'));
+  let commonPath = splitPaths[0];
+  for (let i = 1; i < splitPaths.length; i += 1) {
+    const path = splitPaths[i];
+    commonPath = commonPath.filter((segment, index) => path[index] === segment);
+  }
+  return commonPath.length > 0 ? `${commonPath.join('/')}/` : '';
 }
 
 
